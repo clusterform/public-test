@@ -33,7 +33,6 @@ jobs:
     if: needs.check-tag-origin.outputs.is_main == 'true'
     container:
       image: node:20
-    runs-on: self-hosted
     steps:
       - name: Check out repository code
         run:
