@@ -8,8 +8,7 @@ on:
 jobs:
   # ensure that only main branch tags are deployed to production
   deploy:
-    container:
-      image: node:20
+    runs-on: ubuntu-latest
     steps:
       - name: test
         run:
