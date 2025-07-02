@@ -1,39 +1,16 @@
 name: Deploy to nowhere
 
 on:
-  push:
-    tags:
-      - '*'  # Triggers on any tag creation
+  pull_request:
+    types: [opened, synchronize]
+
 
 jobs:
   # ensure that only main branch tags are deployed to production
-  check-tag-origin:
-    runs-on: ubuntu-latest
-    outputs:
-      is_main: ${{ steps.check_branch.outputs.is_main }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Get Tag Source Branch
-        id: check_branch
-        run: |
-          set -x
-          git checkout main
-          git pull
-          TAG_SHA=$(git rev-list -n 1 ${{ github.ref }})
-          if git merge-base --is-ancestor "$TAG_SHA" main; then
-            echo "is_main=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "is_main=false" >> "$GITHUB_OUTPUT"
-          fi
   deploy:
-    needs: check-tag-origin
-    if: needs.check-tag-origin.outputs.is_main == 'true'
     container:
       image: node:20
     steps:
-      - name: Check out repository code
+      - name: test
         run:
-          echo "works"
+          echo "test"
